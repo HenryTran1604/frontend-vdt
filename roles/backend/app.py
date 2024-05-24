@@ -2,21 +2,21 @@ from flask import request, jsonify
 from bson.objectid import ObjectId
 from __init__ import app, db
 
-@app.route("/")
+@app.route("/api/list")
 def home():
     students = list(db.students.find())
     for i in range(len(students)):
         students[i]['_id'] = str(ObjectId(students[i]['_id']))
     return jsonify(students), 200
 
-@app.route('/detail/<string:_id>')
+@app.route('/api/detail/<string:_id>')
 def get_student_by(_id):
     student = db.students.find_one(ObjectId(_id))
     student['_id'] = str(ObjectId(_id))
     return jsonify(student), 200
 
     
-@app.route('/add', methods=['POST'])
+@app.route('/api/add', methods=['POST'])
 def add():
     new_student = request.get_json()
     del new_student['_id']
@@ -26,7 +26,7 @@ def add():
     return jsonify(new_student), 200
 
 
-@app.route('/update/<string:_id>', methods=['POST'])
+@app.route('/api/update/<string:_id>', methods=['POST'])
 def update(_id):
     new_student = request.get_json()
     del new_student['_id']
@@ -44,7 +44,7 @@ def update(_id):
 
 
 
-@app.route('/delete/<string:_id>', methods=['POST'])
+@app.route('/api/delete/<string:_id>', methods=['POST'])
 def delete(_id):
     result = db.students.find_one_and_delete({"_id" : ObjectId(_id)})
     if result:

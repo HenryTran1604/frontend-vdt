@@ -15,7 +15,7 @@ FROM nginx:1.26.0-alpine
 # Copying built assets from builder
 COPY --from=builder /app/build /usr/share/nginx/html
 
-# Copying our nginx.conf
+# Copying nginx.conf
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 CMD ["nginx", "-g", "daemon off;"]
