@@ -27,18 +27,18 @@ class AppTestCase(unittest.TestCase):
         self.client = app.test_client()
 
     def test_get_all_students(self):
-        response = self.client.get('/')
+        response = self.client.get('/api/list')
         self.assertEqual(response.status_code, 200)
 
     def test_add_student(self):
-        response = self.client.post('/add', json=data)
+        response = self.client.post('/api/add', json=data)
         self.assertEqual(response.status_code, 200)
 
     def test_get_student(self):
         # thêm sv vào db
-        response = self.client.post('/add', json=data)
+        response = self.client.post('/api/add', json=data)
         _id = response.get_json()['_id']
-        response = self.client.get(f'/detail/{_id}')
+        response = self.client.get(f'/api/detail/{_id}')
         response_student = response.get_json()
         response_student['_id'] = '' # không quan tâm id
         self.assertEqual(response.status_code, 200)
@@ -47,10 +47,10 @@ class AppTestCase(unittest.TestCase):
     def test_update_student(self):
         # thêm một student vào db
         # response trả về student đó
-        response = self.client.post('/add', json=data)
+        response = self.client.post('/api/add', json=data)
         _id = response.get_json()['_id']
         # cập nhật lại student với _id của student vừa thêm
-        response = self.client.post(f'/update/{_id}', json=updated_data)
+        response = self.client.post(f'/api/update/{_id}', json=updated_data)
         updated_data['_id'] = _id # cập nhật lại id
         # print(response.get_json())
         self.assertEqual(response.status_code, 200)
@@ -59,9 +59,9 @@ class AppTestCase(unittest.TestCase):
     def test_delete_student(self):
         # thêm một student vào db
         # response trả về student đó
-        response = self.client.post('/add', json=data)
+        response = self.client.post('/api/add', json=data)
         _id = response.get_json()['_id']
-        response = self.client.post(f'/delete/{_id}')
+        response = self.client.post(f'/api/delete/{_id}')
         self.assertEqual(response.status_code, 200)
 
 
