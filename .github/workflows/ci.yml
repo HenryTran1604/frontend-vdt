@@ -18,4 +18,4 @@ jobs:
       run: docker compose -f roles/docker-compose.yaml up -d
       
     - name: Run tests
-      run: docker exec backend python test.py
+      run: docker exec be python test.py
